@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1> {{ city.name }} </h1>
+
+<ul>
+{% for forecast in forecasts %}
+    <li>
+        Date : {{ forecast.date|date('d.m.Y') }}
+        Temperature: {{ forecast.temperature }}&deg
+        Humidity: {{ forecast.humidity }}%
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
