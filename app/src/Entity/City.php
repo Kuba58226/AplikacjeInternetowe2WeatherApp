@@ -42,6 +42,13 @@ class City
         return $this->id;
     }
 
+    public function setId($id): self
+    {
+        $this->id = $id->getId();
+
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -88,5 +95,10 @@ class City
         $this->country = $country;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 }

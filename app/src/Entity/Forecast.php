@@ -47,6 +47,13 @@ class Forecast
         return $this->id;
     }
 
+    public function setId($id): self
+    {
+        $this->id = $id->getId();
+
+        return $this;
+    }
+
     public function getCity(): ?City
     {
         return $this->city;
@@ -105,5 +112,10 @@ class Forecast
         $this->humidity = $humidity;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 }
