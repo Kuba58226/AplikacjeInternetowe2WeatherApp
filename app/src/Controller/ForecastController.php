@@ -2,76 +2,93 @@
 
 namespace App\Controller;
 
+use App\Entity\Forecast;
+use App\Form\ForecastType;
+use App\Repository\ForecastRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\ForecastType;
-use App\Form\ForecastEditType;
-use App\Form\ForecastDeleteType;
-use App\Entity\City;
-use App\Entity\Forecast;
-use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Route("/forecast")
+ */
 class ForecastController extends AbstractController
 {
-    public function index(Request $request): Response
+    /**
+     * @Route("/", name="forecast_index", methods={"GET"})
+     */
+    public function index(ForecastRepository $forecastRepository): Response
+    {
+        return $this->render('forecast/index.html.twig', [
+            'forecasts' => $forecastRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/new", name="forecast_new", methods={"GET","POST"})
+     */
+    public function new(Request $request): Response
     {
         $forecast = new Forecast();
         $form = $this->createForm(ForecastType::class, $forecast);
-
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $forecast = $form->getData();
 
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($forecast);
             $entityManager->flush();
+
+            return $this->redirectToRoute('forecast_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('city/index.html.twig', [
+        return $this->render('forecast/new.html.twig', [
+            'forecast' => $forecast,
             'form' => $form->createView(),
         ]);
     }
 
-    public function edit(Request $request): Response
+    /**
+     * @Route("/{id}", name="forecast_show", methods={"GET"})
+     */
+    public function show(Forecast $forecast): Response
     {
-        $forecast = new Forecast();
-        $form = $this->createForm(ForecastEditType::class, $forecast);
+        return $this->render('forecast/show.html.twig', [
+            'forecast' => $forecast,
+        ]);
+    }
 
+    /**
+     * @Route("/{id}/edit", name="forecast_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Forecast $forecast): Response
+    {
+        $form = $this->createForm(ForecastType::class, $forecast);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $forecast = $this->getDoctrine()->getRepository(Forecast::class)->find($form->getData()->getId());
-            $forecast->setDate($form->getData()->getDate());
-            $forecast->setTemperature($form->getData()->getTemperature());
-            $forecast->setWindSpeed($form->getData()->getWindSpeed());
-            $forecast->setHumidity($form->getData()->getHumidity());
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($forecast);
-            $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('forecast_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('city/index.html.twig', [
+        return $this->render('forecast/edit.html.twig', [
+            'forecast' => $forecast,
             'form' => $form->createView(),
         ]);
     }
 
-    public function delete(Request $request): Response
+    /**
+     * @Route("/{id}", name="forecast_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Forecast $forecast): Response
     {
-        $forecast = new Forecast();
-        $form = $this->createForm(ForecastDeleteType::class, $forecast);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $forecast = $this->getDoctrine()->getRepository(Forecast::class)->find($form->getData()->getId());
-
+        if ($this->isCsrfTokenValid('delete'.$forecast->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($forecast);
             $entityManager->flush();
         }
 
-        return $this->render('city/index.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('forecast_index', [], Response::HTTP_SEE_OTHER);
     }
 }

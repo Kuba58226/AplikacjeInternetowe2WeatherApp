@@ -1,27 +1,3 @@
 weather:
    path: /weather/{city}/{country}
    controller: App\Controller\WeatherController::cityAction
-
-city:
-   path: /city
-   controller: App\Controller\CityController::index
-
-city_edit:
-   path: /city-edit
-   controller: App\Controller\CityController::edit
-
-city_delete:
-   path: /city-delete
-   controller: App\Controller\CityController::delete
-
-forecast:
-   path: /forecast
-   controller: App\Controller\ForecastController::index
-
-forecast_edit:
-   path: /forecast-edit
-   controller: App\Controller\ForecastController::edit
-
-forecast_delete:
-   path: /forecast-delete
-   controller: App\Controller\ForecastController::delete

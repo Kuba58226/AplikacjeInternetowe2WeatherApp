@@ -6,7 +6,6 @@ use App\Entity\City;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CityType extends AbstractType
 {
@@ -17,7 +16,6 @@ class CityType extends AbstractType
             ->add('longitude')
             ->add('latitude')
             ->add('country')
-            ->add('save', SubmitType::class)
         ;
     }
 

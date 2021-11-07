@@ -1,5 +1,41 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Forecast index{% endblock %}
+
 {% block body %}
-    {{ form(form) }}
+    <h1>Forecast index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Temperature</th>
+                <th>Wind_speed</th>
+                <th>Humidity</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for forecast in forecasts %}
+            <tr>
+                <td>{{ forecast.id }}</td>
+                <td>{{ forecast.date ? forecast.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ forecast.temperature }}</td>
+                <td>{{ forecast.windSpeed }}</td>
+                <td>{{ forecast.humidity }}</td>
+                <td>
+                    <a href="{{ path('forecast_show', {'id': forecast.id}) }}">show</a>
+                    <a href="{{ path('forecast_edit', {'id': forecast.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('forecast_new') }}">Create new</a>
 {% endblock %}

@@ -6,7 +6,6 @@ use App\Entity\Forecast;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ForecastType extends AbstractType
 {
@@ -18,7 +17,6 @@ class ForecastType extends AbstractType
             ->add('wind_speed')
             ->add('humidity')
             ->add('city')
-            ->add('save', SubmitType::class)
         ;
     }
 
