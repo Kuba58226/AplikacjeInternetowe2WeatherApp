@@ -1,3 +1,7 @@
 weather:
    path: /weather/{city}/{country}
    controller: App\Controller\WeatherController::cityAction
+
+crud:
+   path: /weather/crud
+   controller: App\Controller\WeatherController::crud

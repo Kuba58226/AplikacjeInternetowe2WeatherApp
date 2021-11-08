@@ -30,9 +30,15 @@ class WeatherController extends AbstractController
         $forecasts = $this->forecastRepository->findByCity($city[0]);
 
         return $this->render('weather/index.html.twig', [
-            'controller_name' => 'WeatherController',
             'city' => $city[0],
             'forecasts' => $forecasts,
+        ]);
+    }
+
+    public function crud(): Response
+    {
+        return $this->render('weather/crud.html.twig', [
+
         ]);
     }
 }
