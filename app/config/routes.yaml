@@ -5,3 +5,7 @@ weather:
 crud:
    path: /weather/crud
    controller: App\Controller\WeatherController::crud
+
+app_logout:
+   path: /logout
+   methods: GET

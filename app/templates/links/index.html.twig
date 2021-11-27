@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LinksController!{% endblock %}
+
+{% block body %}
+    {% if is_granted("ROLE_ADMIN") %}
+        <a href="https://www.zut.edu.pl">www.zut.edu.pl</a>
+    {% else %}
+        <a href="https://www.google.pl">www.google.pl</a>
+    {% endif %}
+{% endblock %}
